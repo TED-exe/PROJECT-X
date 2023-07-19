@@ -9,6 +9,7 @@ public class EnumsHolder : MonoBehaviour
         walking,
         running,
         air,
-        crouching
+        crouching,
+        pullingObject
     }
 }
