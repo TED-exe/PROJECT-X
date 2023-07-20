@@ -15,10 +15,10 @@ public class LaserCaster : MonoBehaviour
     LaserBeam laserBeam;
     private void Update()
     {
-        if(b_laserSwitch)
+        if (laserBeam != null)
+            Destroy(laserBeam.go_laserObj);
+        if (b_laserSwitch)
         {
-            if (laserBeam != null)
-                Destroy(laserBeam.ga_laserObj);
             laserBeam = new LaserBeam(tr_laserCaster.position, tr_laserCaster.forward, m_laserMaterial, c_laserColor, f_laserStartWidth, f_laserEndWidth, tr_laserCaster, lm_objectStopLaser);
         }
     }

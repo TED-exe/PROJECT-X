@@ -8,8 +8,9 @@ public class PlayerRotateSystem : MonoBehaviour
     [SerializeField] private LayerMask lm_groundCollideWithRay;
     [SerializeField] private float f_freeRotateSpeed;
     [SerializeField] private float f_closedRotateSpeed;
+    [SerializeField] private so_vectorValue v3_moveDirection;
 
-    public void RotatePlayer(ControllHolder controllHolder, Vector3 moveDirection)
+    public void RotatePlayer(ControllHolder controllHolder)
     {
         // if hold button rotate player is free (you can move and look on other side)
         if (Input.GetKey(controllHolder.kc_allowToRotatePlayerKey))
@@ -27,9 +28,9 @@ public class PlayerRotateSystem : MonoBehaviour
         else
         {
             // if freelooking off player look in move direction;
-            if (moveDirection != Vector3.zero)
+            if (v3_moveDirection.v3_value != Vector3.zero)
             {
-                Quaternion toRotate = Quaternion.LookRotation(moveDirection, Vector3.up);
+                Quaternion toRotate = Quaternion.LookRotation(v3_moveDirection.v3_value, Vector3.up);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, f_closedRotateSpeed * Time.deltaTime);
             }
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectPull : MonoBehaviour
 {
     private const string Player = "Player";
+
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag(Player))
@@ -21,4 +22,5 @@ public class ObjectPull : MonoBehaviour
             return;
         pullSystem.b_stayInColider = false;
     }
+
 }

@@ -6,8 +6,10 @@ public class PlayerPullObjectSystem : MonoBehaviour
 {
     [Header("PULL")]
     [SerializeField] private float f_pullRange;
+    [SerializeField] private so_floatValue f_moveSpeed;
     [SerializeField] private so_boolValue b_isPulling;
     [SerializeField] private so_boolValue b_canRotate;
+    [SerializeField] private so_vectorValue v3_moveDirection;
     [SerializeField] private LayerMask lm_objectAbleToPull;
     private Transform tr_holder;
     public bool b_stayInColider;
@@ -38,8 +40,9 @@ public class PlayerPullObjectSystem : MonoBehaviour
         tr_holder = objectToPull;
 
         if (!succes)
-            return; 
-            
+        {;
+            return;
+        }
 
         if(b_stayInColider)
         {
@@ -50,7 +53,7 @@ public class PlayerPullObjectSystem : MonoBehaviour
     }
     private (bool succes, Transform objectToPull) CheckObject(Transform raycastCaster)
     {
-        if (!Physics.Raycast(raycastCaster.position, Vector3.forward, out rh_hitedObjectByRay, f_pullRange, lm_objectAbleToPull))
+        if (!Physics.Raycast(raycastCaster.position, raycastCaster.forward, out rh_hitedObjectByRay, f_pullRange, lm_objectAbleToPull))
             return (succes: false, objectToPull: null);
 
         return (succes: true, objectToPull: rh_hitedObjectByRay.transform);

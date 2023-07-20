@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0815a84de915684408cea48838758b0a, type: 3}
-  m_Name: so_playerPullingSpeed
+  m_Script: {fileID: 11500000, guid: 51dd571154cb3b049b33cbe1cd8c803e, type: 3}
+  m_Name: so_moveDirection
   m_EditorClassIdentifier: 
-  value: 2.3
+  v3_value: {x: 0, y: 0, z: 0}
+  v2_value: {x: 0, y: 0}

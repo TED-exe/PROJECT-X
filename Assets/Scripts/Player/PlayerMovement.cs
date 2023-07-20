@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("MOVEMENT")]
     [SerializeField] private so_floatValue f_moveSpeed;
+    [SerializeField] private so_vectorValue v3_moveDirection;
     [Header("SLOPE MOVEMENT")]
     [SerializeField] private float f_maxSlopeAngle;
     private RaycastHit rh_slopeHit;
@@ -22,12 +23,11 @@ public class PlayerMovement : MonoBehaviour
     private float f_horizontal;
     private float f_vertical;
 
-    Vector3 v3_moveDirection;
-
     private Rigidbody rb;
 
     private void Awake()
     {
+        v3_moveDirection.v3_value = Vector3.zero;
         rb = GetComponent<Rigidbody>();
     }
     public bool GroundCheck(Transform raycastCaster)
@@ -51,7 +51,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void MovePlayer(Transform raycastCaster)
     {
-        Debug.Log("chodze");
 
         // on slope
         if (OnSlope(raycastCaster))
@@ -62,10 +61,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }
 
-        // calculate Direction;
-        var direction = CalculatePlayerDirection();
+        v3_moveDirection.v3_value = new Vector3(f_horizontal, 0f, f_vertical);
 
-        rb.AddForce(direction.normalized * f_moveSpeed.value * 10, ForceMode.Force);
+        rb.AddForce(v3_moveDirection.v3_value.normalized * f_moveSpeed.value * 10, ForceMode.Force);
     }
     public void SpeedControll()
     {
@@ -92,11 +90,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 GetSlopeMoveDirection()
     {
-        return Vector3.ProjectOnPlane(v3_moveDirection, rh_slopeHit.normal).normalized;
-    }
-    public Vector3 CalculatePlayerDirection()
-    {
-        v3_moveDirection = new Vector3(f_horizontal, 0f, f_vertical);
-        return v3_moveDirection;
+        return Vector3.ProjectOnPlane(v3_moveDirection.v3_value, rh_slopeHit.normal).normalized;
     }
 }

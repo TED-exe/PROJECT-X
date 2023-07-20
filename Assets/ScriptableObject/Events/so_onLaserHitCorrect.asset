@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0815a84de915684408cea48838758b0a, type: 3}
-  m_Name: so_playerPullingSpeed
+  m_Script: {fileID: 11500000, guid: daeaa22db2c20f640bdecdf24d926703, type: 3}
+  m_Name: so_onLaserHitCorrect
   m_EditorClassIdentifier: 
-  value: 2.3
+  listeners: []

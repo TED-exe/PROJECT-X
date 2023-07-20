@@ -7,24 +7,24 @@ public class LaserBeam
     private Vector3 v3_laserPos;
     private Vector3 v3_laserDir;
 
-    public GameObject ga_laserObj;
+    public GameObject go_laserObj;
     LineRenderer lineRenderer;
     List<Vector3> v3_laserIndices = new List<Vector3>();
     public LaserBeam(Vector3 v3_laserPos, Vector3 v3_laserDir, Material m_laserMaterial, Color c_laserColor, float f_laserStartWidth, float f_laserEndWidth, Transform tr_laserParent, LayerMask lm_objectStopLaser)
     {
         this.lineRenderer = new LineRenderer();
-        this.ga_laserObj = new GameObject();
-        this.ga_laserObj.name = "Laser Beam";
+        this.go_laserObj = new GameObject();
+        this.go_laserObj.name = "Laser Beam";
         this.v3_laserPos = v3_laserPos;
         this.v3_laserDir = v3_laserDir;
 
-        this.lineRenderer = this.ga_laserObj.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        this.lineRenderer = this.go_laserObj.AddComponent(typeof(LineRenderer)) as LineRenderer;
         this.lineRenderer.startWidth = f_laserStartWidth;
         this.lineRenderer.endWidth = f_laserEndWidth;
         this.lineRenderer.material = m_laserMaterial;
         this.lineRenderer.startColor = c_laserColor;
         this.lineRenderer.endColor = c_laserColor;
-        this.ga_laserObj.transform.SetParent(tr_laserParent);
+        this.go_laserObj.transform.SetParent(tr_laserParent);
 
         CastRay(v3_laserPos, v3_laserDir, lineRenderer, lm_objectStopLaser);
     }
@@ -67,6 +67,18 @@ public class LaserBeam
             Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
 
             CastRay(pos, dir, lineRenderer, lm_objectStopLaser);
+        }
+        else if(hitInfo.collider.gameObject.tag == "target")
+        {
+            if(hitInfo.collider.TryGetComponent<LaserTriggerButton>(out LaserTriggerButton laserTriggerButton))
+            {
+                laserTriggerButton.b_isHited = true;
+                Debug.Log("mleko");
+            }
+                
+            v3_laserIndices.Add(hitInfo.point);
+            UpdateLaser();
+            
         }
         else
         {

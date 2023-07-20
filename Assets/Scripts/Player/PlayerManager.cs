@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         movementSystem.MyInput(controllHolder); // take velocity from movement button
         movementSystem.OnSlopeOffGravity(tr_raycastCaster);// turn off gravity while slope
         StateHandler(); // state controller
-        if (b_canRotate.value) rotateSystem.RotatePlayer(controllHolder, movementSystem.CalculatePlayerDirection()); // rotate player (free and locked)
+        if (b_canRotate.value) rotateSystem.RotatePlayer(controllHolder); // rotate player (free and locked)
         crouchingSystem.MyInput(controllHolder, tr_raycastCaster); // take input crouching
         crouchingSystem.Crouching(tr_playerCollider); // crouching
         pullObjectSystem.MyInput(controllHolder, tr_raycastCaster);// pulling Object
