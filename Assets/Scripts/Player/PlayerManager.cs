@@ -10,9 +10,11 @@ public class PlayerManager : MonoBehaviour
     private PlayerRotateSystem rotateSystem;
     private ControllHolder controllHolder;
     private PlayerPullObjectSystem pullObjectSystem;
+    private PlayerFieldOfView fieldOfView;
 
     [Header("TRANSFORM")]
-    [SerializeField] private Transform tr_raycastCaster;
+    [SerializeField] private Transform tr_raycastCasterV1;
+    [SerializeField] private Transform tr_raycastCasterV2;
     [SerializeField] private Transform tr_playerCollider;
     [Header("FLOAT")]
     [SerializeField] private so_floatValue f_crouchSpeed;
@@ -37,25 +39,31 @@ public class PlayerManager : MonoBehaviour
         movementSystem = GetComponent<PlayerMovement>();
         rotateSystem = GetComponent<PlayerRotateSystem>();
         controllHolder = GetComponent<ControllHolder>();
+        fieldOfView = GetComponent<PlayerFieldOfView>();
 
         BaseSetUp(); //base game set up;
     }
     private void Update()
     {
-        b_isGround = movementSystem.GroundCheck(tr_raycastCaster); // chechk Ground
+        b_isGround = movementSystem.GroundCheck(tr_raycastCasterV1); // chechk Ground
         movementSystem.SpeedControll(); // controll max player speed
         movementSystem.HandleDrag(b_isGround); // pulling the player to the ground (change in air and on ground)
         movementSystem.MyInput(controllHolder); // take velocity from movement button
-        movementSystem.OnSlopeOffGravity(tr_raycastCaster);// turn off gravity while slope
+        movementSystem.OnSlopeOffGravity(tr_raycastCasterV1);// turn off gravity while slope
         StateHandler(); // state controller
         if (b_canRotate.value) rotateSystem.RotatePlayer(controllHolder); // rotate player (free and locked)
-        crouchingSystem.MyInput(controllHolder, tr_raycastCaster); // take input crouching
+        crouchingSystem.MyInput(controllHolder, tr_raycastCasterV1, tr_raycastCasterV2); // take input crouching
         crouchingSystem.Crouching(tr_playerCollider); // crouching
-        pullObjectSystem.MyInput(controllHolder, tr_raycastCaster);// pulling Object
+        pullObjectSystem.MyInput(controllHolder, tr_raycastCasterV1);// pulling Object
+
     }
     private void FixedUpdate()
     {
-        movementSystem.MovePlayer(tr_raycastCaster); // player movement
+        movementSystem.MovePlayer(tr_raycastCasterV1); // player movement
+    }
+    private void LateUpdate()
+    {
+        fieldOfView.DrawFieldOfView();
     }
     private void BaseSetUp()
     {

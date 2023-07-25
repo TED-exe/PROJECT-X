@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 8257444444437253832}
   - component: {fileID: 5739210882888811291}
   - component: {fileID: 3733832057424770502}
-  - component: {fileID: 4689075053845960782}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4689075053845960782
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2558509633651715043}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5423470299005578663
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,9 +95,10 @@ GameObject:
   - component: {fileID: 9109995847867230722}
   - component: {fileID: 7460986815135177286}
   - component: {fileID: 1826738008966955310}
-  m_Layer: 0
-  m_Name: LaserTarget
-  m_TagString: Untagged
+  - component: {fileID: 2179887227644881722}
+  m_Layer: 12
+  m_Name: PlaceHolder_LaserTarget
+  m_TagString: target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,5 +188,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5884336, y: 1.0112293, z: 1}
+  m_Center: {x: -0.29421702, y: 0.0056146085, z: 0}
+--- !u!114 &2179887227644881722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5423470299005578663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff88ede5764b4084583ebaaca3eb0f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  b_isHit: 0
+  OnLaserHit: {fileID: 11400000, guid: 3078d424fa6e64b468741f0b0b129b80, type: 2}
+  go_doorToOpen: {fileID: 0}

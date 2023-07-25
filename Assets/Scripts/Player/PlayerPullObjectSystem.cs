@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerPullObjectSystem : MonoBehaviour
 {
-    [Header("PULL")]
+    [Header("PULL SETTING")]
     [SerializeField] private float f_pullRange;
     [SerializeField] private so_floatValue f_moveSpeed;
     [SerializeField] private so_boolValue b_isPulling;

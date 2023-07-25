@@ -7,14 +7,14 @@ using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("MOVEMENT")]
+    [Header("MOVEMENT SETTING")]
     [SerializeField] private so_floatValue f_moveSpeed;
     [SerializeField] private so_vectorValue v3_moveDirection;
-    [Header("SLOPE MOVEMENT")]
+    [Header("SLOPE MOVEMENT SETTING")]
     [SerializeField] private float f_maxSlopeAngle;
     private RaycastHit rh_slopeHit;
 
-    [Header("GROUND CHECK")]
+    [Header("GROUND CHECK SETTING")]
     [SerializeField] private so_floatValue f_playerHeight;
     [SerializeField] private LayerMask lm_whatIsWalkingGround;
     [SerializeField] private float f_groundDrag;

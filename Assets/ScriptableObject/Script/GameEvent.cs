@@ -7,6 +7,7 @@ public class GameEvent : ScriptableObject
 {
     public List<GameEventListener> listeners = new List<GameEventListener>();
 
+    // raise gameevent (play)
     public void Raise(Component sender, object data)
     {
         for(int i = 0; i < listeners.Count; i++)

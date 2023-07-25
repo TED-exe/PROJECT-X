@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: daeaa22db2c20f640bdecdf24d926703, type: 3}
-  m_Name: so_onLaserHitCorrect
+  m_Name: so_onLaserHit
   m_EditorClassIdentifier: 
   listeners: []

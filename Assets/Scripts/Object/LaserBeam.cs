@@ -26,11 +26,13 @@ public class LaserBeam
         this.lineRenderer.endColor = c_laserColor;
         this.go_laserObj.transform.SetParent(tr_laserParent);
 
+        // cast ray from point
         CastRay(v3_laserPos, v3_laserDir, lineRenderer, lm_objectStopLaser);
     }
 
     private void CastRay(Vector3 pos,Vector3 dir, LineRenderer lineRenderer, LayerMask lm_objectStopLaser)
     {
+
         v3_laserIndices.Add(pos);
         
         Ray ray = new Ray(pos,dir);
@@ -46,7 +48,32 @@ public class LaserBeam
             UpdateLaser();
         }
     }
+    private void CheckHit(RaycastHit hitInfo, Vector3 direction, LineRenderer lineRenderer, LayerMask lm_objectStopLaser)
+    {
+        if (hitInfo.collider.gameObject.tag == "mirror")
+        {
+            Vector3 pos = hitInfo.point;
+            Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
 
+            CastRay(pos, dir, lineRenderer, lm_objectStopLaser);
+        }
+        else if (hitInfo.collider.gameObject.tag == "target")
+        {
+            if (hitInfo.collider.TryGetComponent<LaserTarget>(out LaserTarget laserTriggerButton))
+            {
+                laserTriggerButton.b_isHit = true;
+            }
+
+            v3_laserIndices.Add(hitInfo.point);
+            UpdateLaser();
+
+        }
+        else
+        {
+            v3_laserIndices.Add(hitInfo.point);
+            UpdateLaser();
+        }
+    }
     private void UpdateLaser()
     {
         int count = 0;
@@ -59,31 +86,5 @@ public class LaserBeam
         }
     }
 
-    private void CheckHit(RaycastHit hitInfo, Vector3 direction, LineRenderer lineRenderer, LayerMask lm_objectStopLaser)
-    {
-        if(hitInfo.collider.gameObject.tag == "mirror")
-        {
-            Vector3 pos = hitInfo.point;
-            Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
 
-            CastRay(pos, dir, lineRenderer, lm_objectStopLaser);
-        }
-        else if(hitInfo.collider.gameObject.tag == "target")
-        {
-            if(hitInfo.collider.TryGetComponent<LaserTriggerButton>(out LaserTriggerButton laserTriggerButton))
-            {
-                laserTriggerButton.b_isHited = true;
-                Debug.Log("mleko");
-            }
-                
-            v3_laserIndices.Add(hitInfo.point);
-            UpdateLaser();
-            
-        }
-        else
-        {
-            v3_laserIndices.Add(hitInfo.point);
-            UpdateLaser();
-        }
-    }
 }

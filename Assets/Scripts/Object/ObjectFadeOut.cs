@@ -1,50 +1,39 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class ObjectFadeOut : MonoBehaviour
+public class ObjectFadeOut : MonoBehaviour, IEquatable<ObjectFadeOut>
 {
-    [Header("FADE OUT")]
-    [SerializeField][Range(0f,1f)] private float f_fadeOutAmount =.2f;
-    [Min(.2f)][SerializeField] private float f_fadeOutSpeed = 10f;
-    private float f_originialOpacity;
-    public bool b_doFade = false;
-    private Material m_objectMaterial;
-
+    public List<Renderer> re_FadeOutRenderers = new List<Renderer>();
+    public Vector3 v3_Position;
+    public List<Material> m_materials = new List<Material>();
+    [HideInInspector] public float f_initialObjectAlfa;
     private void Awake()
+    {   
+        v3_Position = transform.position;
+
+        if (re_FadeOutRenderers.Count == 0)
+        {
+            re_FadeOutRenderers.AddRange(GetComponentsInChildren<Renderer>());
+        }
+        foreach (Renderer renderer in re_FadeOutRenderers)
+        {
+            m_materials.Add(renderer.material);
+        }
+        f_initialObjectAlfa = m_materials[0].color.a;
+    }
+    public bool Equals(ObjectFadeOut other)
     {
-        m_objectMaterial = GetComponent<Renderer>().material;
-        f_originialOpacity = m_objectMaterial.GetFloat("_OPACITY");
+        return v3_Position.Equals(other.v3_Position);
     }
 
-    private void Update()
+    public override int GetHashCode()
     {
-        if (!b_doFade)
-        {
-            FadeIn();
-            return;
-        }
-        else
-        {
-            FadeOut();
-            return;
-        }
-    }
-    private void FadeOut()
-    {
-        var currentOpacity = m_objectMaterial.GetFloat("_OPACITY");
-        if (currentOpacity != f_fadeOutAmount)
-            m_objectMaterial.SetFloat("_OPACITY", Mathf.Lerp(currentOpacity, f_fadeOutAmount, f_fadeOutSpeed * Time.deltaTime));
-        return;
-    }
-    private void FadeIn()
-    {
-        var currentOpacity = m_objectMaterial.GetFloat("_OPACITY");
-        if (currentOpacity != f_originialOpacity)
-            m_objectMaterial.SetFloat("_OPACITY", Mathf.Lerp(currentOpacity, f_originialOpacity, f_fadeOutSpeed * Time.deltaTime));
-        return;
+        return v3_Position.GetHashCode();
     }
 
 }
