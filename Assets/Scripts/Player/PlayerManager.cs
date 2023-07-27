@@ -10,7 +10,8 @@ public class PlayerManager : MonoBehaviour
     private PlayerRotateSystem rotateSystem;
     private ControllHolder controllHolder;
     private PlayerPullObjectSystem pullObjectSystem;
-    private PlayerFieldOfView fieldOfView;
+    private PlayerLanternFieldOfView lanternFieldOfView;
+    private PlayerFadingBlockingObject fadingBlockingObject;
 
     [Header("TRANSFORM")]
     [SerializeField] private Transform tr_raycastCasterV1;
@@ -39,9 +40,15 @@ public class PlayerManager : MonoBehaviour
         movementSystem = GetComponent<PlayerMovement>();
         rotateSystem = GetComponent<PlayerRotateSystem>();
         controllHolder = GetComponent<ControllHolder>();
-        fieldOfView = GetComponent<PlayerFieldOfView>();
+        lanternFieldOfView = GetComponent<PlayerLanternFieldOfView>();
+        fadingBlockingObject = GetComponent<PlayerFadingBlockingObject>();
 
         BaseSetUp(); //base game set up;
+    }
+    private void Start()
+    {
+        lanternFieldOfView.StartCouroutine();
+        fadingBlockingObject.StartCoroutine();
     }
     private void Update()
     {
@@ -55,6 +62,7 @@ public class PlayerManager : MonoBehaviour
         crouchingSystem.MyInput(controllHolder, tr_raycastCasterV1, tr_raycastCasterV2); // take input crouching
         crouchingSystem.Crouching(tr_playerCollider); // crouching
         pullObjectSystem.MyInput(controllHolder, tr_raycastCasterV1);// pulling Object
+        lanternFieldOfView.MyInput();
 
     }
     private void FixedUpdate()
@@ -63,11 +71,13 @@ public class PlayerManager : MonoBehaviour
     }
     private void LateUpdate()
     {
-        fieldOfView.DrawFieldOfView();
+        lanternFieldOfView.DrawFieldOfView();
     }
     private void BaseSetUp()
     {
         crouchingSystem.BaseSetUp(tr_playerCollider); // base set Up for crouching
+        lanternFieldOfView.BaseSetUp(); // base set up for lantern field of view
+        fadingBlockingObject.BaseSetUp(); // base set up for fading object
         b_canRotate.value = true;
         b_isPulling.value = false;
         b_isCrouching.value = false;

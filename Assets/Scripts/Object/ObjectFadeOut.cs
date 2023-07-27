@@ -26,6 +26,9 @@ public class ObjectFadeOut : MonoBehaviour, IEquatable<ObjectFadeOut>
         }
         f_initialObjectAlfa = m_materials[0].color.a;
     }
+    public void BaseSetUp()
+    { 
+    }
     public bool Equals(ObjectFadeOut other)
     {
         return v3_Position.Equals(other.v3_Position);

@@ -9,6 +9,9 @@ public class ControllHolder : MonoBehaviour
     public KeyCode kc_crouchKey;
     public KeyCode kc_allowToRotatePlayerKey;
     public KeyCode kc_allowToPullKey;
+    public KeyCode kc_switchLanternLightKey;
+    public KeyCode kc_increseLightFocus;
+    public KeyCode kc_decreaseLightFocus;
 
 
     [HideInInspector] public float f_verticalInput;
