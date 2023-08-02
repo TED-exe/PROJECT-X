@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class EnumsHolder : MonoBehaviour
 {
-    public enum MovementState
+    public enum PlayerMovementState
     {
         walking,
         running,
         air,
         crouching,
         pullingObject
+    }
+    public enum EnemyMovementState
+    {
+        patroling,
+        chasing,
+        chasingInLight,
     }
 }

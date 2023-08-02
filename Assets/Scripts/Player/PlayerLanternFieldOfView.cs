@@ -5,43 +5,37 @@ using UnityEngine;
 public class PlayerLanternFieldOfView : MonoBehaviour
 {
     [Header("FIELD OF VIEW SETTINGS")]
-    public float f_playerViewRadius;
-    [Range(0f, 360f)]
-    [SerializeField] private float f_playerViewMaxAngle;
-    [Range(0f, 360f)]
-    [SerializeField] private float f_playerViewMinAngle;
+    public float f_ViewRadius;
+    [Range(1f, 360f)]
+    [SerializeField] private float f_ViewMaxAngle;
+    [Range(1f, 360f)]
+    [SerializeField] private float f_ViewMinAngle;
+    [Range(5f, 20f)]
     [SerializeField] private float f_changeFocusSpeed;
-    public Transform tr_LanternLightCaster;
-
-
-    [SerializeField] private LayerMask lm_targetMask;
-    [SerializeField] private LayerMask lm_obstacleMask;
-    [Range(0f, 1f)]
+    [Range(0.1f, 1f)]
     [SerializeField] private float f_deleyToRefreshTarget;
-    [Range(0f, 1f)]
+    [Range(0.1f, 1f)]
     [SerializeField] private float f_meshResolution;
     [SerializeField] private float f_edgeDstThreshold;
     [SerializeField] private int i_edgeResolveIteration;
+    [SerializeField] private LayerMask lm_targetMask;
+    [SerializeField] private LayerMask lm_obstacleMask;
+    [SerializeField] private float DMGPlaceHolder;// placeholder
+    [SerializeField] private MeshFilter viewMeshFilter;
 
-    [SerializeField] private GameEvent onEnemyInLanternFieldOfView;
-    [SerializeField] private GameEvent onEnemyLeaveLanternFieldOfView;
-
-    public MeshFilter viewMeshFilter;
     private Mesh viewMesh;
-    private ControllHolder controllHolder;
 
     [Header("ONLYREAD DATA")]
-    [HideInInspector] public float f_playerViewCurrentAngle;
-    [HideInInspector] public bool b_lanternSwitch;
+    public float f_ViewCurrentAngle;
     public List<Transform> tr_visibleTargetList = new List<Transform>();
+    public bool b_lanternSwitch;
     public void BaseSetUp()
     {
         b_lanternSwitch = true;
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
-        controllHolder = GetComponent<ControllHolder>();
-        f_playerViewCurrentAngle = f_playerViewMaxAngle;
+        f_ViewCurrentAngle = f_ViewMaxAngle;
     }
     public void StartCouroutine()
     {
@@ -55,7 +49,7 @@ public class PlayerLanternFieldOfView : MonoBehaviour
             FindVisibleTargets();
         }
     }
-    public void MyInput()
+    public void MyInput(ControllHolder controllHolder)
     {
         if (Input.GetKeyDown(controllHolder.kc_switchLanternLightKey))
         {
@@ -78,14 +72,14 @@ public class PlayerLanternFieldOfView : MonoBehaviour
     {
         if (b_lanternSwitch)
         {
-            int stepCount = Mathf.RoundToInt(f_playerViewCurrentAngle * f_meshResolution);
-            float stepAngleSize = f_playerViewCurrentAngle / stepCount;
+            int stepCount = Mathf.RoundToInt(f_ViewCurrentAngle * f_meshResolution);
+            float stepAngleSize = f_ViewCurrentAngle / stepCount;
             List<Vector3> viewPoints = new List<Vector3>();
             ViewCastInfo oldViewCast = new ViewCastInfo();
 
             for (int i = 0; i <= stepCount; i++)
             {
-                float angle = transform.eulerAngles.y - f_playerViewCurrentAngle / 2 + stepAngleSize * i;
+                float angle = transform.eulerAngles.y - f_ViewCurrentAngle / 2 + stepAngleSize * i;
                 ViewCastInfo newViewCast = ViewCast(angle);
 
                 if (i > 0)
@@ -139,20 +133,20 @@ public class PlayerLanternFieldOfView : MonoBehaviour
     }
     private void IncreaseLanternFocus()
     {
-        if (f_playerViewCurrentAngle < f_playerViewMaxAngle)
-            f_playerViewCurrentAngle += f_changeFocusSpeed * Time.deltaTime;
+        if (f_ViewCurrentAngle < f_ViewMaxAngle)
+            f_ViewCurrentAngle += f_changeFocusSpeed * Time.deltaTime;
 
-        else if (f_playerViewCurrentAngle >= f_playerViewMaxAngle)
-            f_playerViewCurrentAngle = f_playerViewMaxAngle;
+        else if (f_ViewCurrentAngle >= f_ViewMaxAngle)
+            f_ViewCurrentAngle = f_ViewMaxAngle;
 
     }
     private void DecreaseLanternFocus()
     {
-        if (f_playerViewCurrentAngle > f_playerViewMinAngle)
-            f_playerViewCurrentAngle -= f_changeFocusSpeed * Time.deltaTime;
+        if (f_ViewCurrentAngle > f_ViewMinAngle)
+            f_ViewCurrentAngle -= f_changeFocusSpeed * Time.deltaTime;
 
-        else if (f_playerViewCurrentAngle <= f_playerViewMinAngle)
-            f_playerViewCurrentAngle = f_playerViewMinAngle;
+        else if (f_ViewCurrentAngle <= f_ViewMinAngle)
+            f_ViewCurrentAngle = f_ViewMinAngle;
     }
     private EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
     {
@@ -186,12 +180,12 @@ public class PlayerLanternFieldOfView : MonoBehaviour
         Vector3 dir = DirFromAngle(globalAngle, true);
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, dir, out hit, f_playerViewRadius, lm_obstacleMask))
+        if (Physics.Raycast(transform.position, dir, out hit, f_ViewRadius, lm_obstacleMask))
         {
             return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
         }
         else
-            return new ViewCastInfo(false, transform.position + dir * f_playerViewRadius, f_playerViewRadius, globalAngle);
+            return new ViewCastInfo(false, transform.position + dir * f_ViewRadius, f_ViewRadius, globalAngle);
     }
     private struct ViewCastInfo
     {
@@ -222,14 +216,14 @@ public class PlayerLanternFieldOfView : MonoBehaviour
     void FindVisibleTargets()
     {
         TargetStopInteractWithLight();
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, f_playerViewRadius, lm_targetMask);
-        if(b_lanternSwitch)
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, f_ViewRadius, lm_targetMask);
+        if (b_lanternSwitch)
         {
             for (int i = 0; i < targetsInViewRadius.Length; i++)
             {
                 Transform target = targetsInViewRadius[i].transform;
                 Vector3 dirToTarget = (target.position - transform.position).normalized;
-                if (Vector3.Angle(transform.forward, dirToTarget) < f_playerViewCurrentAngle / 2)
+                if (Vector3.Angle(transform.forward, dirToTarget) < f_ViewCurrentAngle / 2)
                 {
                     float dstToTarget = Vector3.Distance(transform.position, target.position);
                     if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, lm_obstacleMask))
@@ -244,16 +238,17 @@ public class PlayerLanternFieldOfView : MonoBehaviour
 
     private void TargetInteractWithLight()
     {
-        foreach(Transform target in tr_visibleTargetList)
+        foreach (Transform target in tr_visibleTargetList)
         {
-            target.GetComponent<ObjectEnemy>().EnemyStayInLight(10 - f_playerViewCurrentAngle/10);
+            target.GetComponent<EnemyController>().EnemyStayInLigt(DMGPlaceHolder);
         }
     }
     private void TargetStopInteractWithLight()
     {
         foreach (Transform target in tr_visibleTargetList)
         {
-            target.GetComponent<ObjectEnemy>().EnemyStopStayInLight();
+            if (target != null)
+                target.GetComponent<EnemyController>().EnemyStopStayInLight();
         }
         tr_visibleTargetList.Clear();
     }

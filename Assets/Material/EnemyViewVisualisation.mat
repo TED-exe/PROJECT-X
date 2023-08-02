@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ViewVisualisationMaterial
+  m_Name: EnemyViewVisualisation
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -152,8 +152,8 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _BASE_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 0.07924521, g: 0.13876481, b: 1, a: 0.5254902}
-    - _Color: {r: 0.07924519, g: 0.13876477, b: 1, a: 0.5254902}
+    - _BaseColor: {r: 1, g: 0.4487977, b: 0.07843137, a: 0.5254902}
+    - _Color: {r: 1, g: 0.4487977, b: 0.078431346, a: 0.5254902}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 0}

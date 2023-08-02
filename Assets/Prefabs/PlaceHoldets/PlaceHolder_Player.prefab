@@ -177,6 +177,9 @@ MonoBehaviour:
   kc_crouchKey: 122
   kc_allowToRotatePlayerKey: 120
   kc_allowToPullKey: 102
+  kc_switchLanternLightKey: 108
+  kc_increseLightFocus: 113
+  kc_decreaseLightFocus: 101
   f_verticalInput: 0
   f_horizontalInput: 0
 --- !u!114 &5992167682523552005
@@ -270,20 +273,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943ed52b4c5609e44989fe9db231b658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  f_playerViewRadius: 10
-  f_playerViewAngle: 70
+  f_ViewRadius: 10
+  f_ViewMaxAngle: 75
+  f_ViewMinAngle: 25
+  f_changeFocusSpeed: 15
+  f_deleyToRefreshTarget: 0.2
+  f_meshResolution: 0.5
+  f_edgeDstThreshold: 4
+  i_edgeResolveIteration: 5
   lm_targetMask:
     serializedVersion: 2
     m_Bits: 8192
   lm_obstacleMask:
     serializedVersion: 2
     m_Bits: 6016
-  f_deleyToRefreshTarget: 0.2
-  f_meshResolution: 0.5
-  f_edgeDstThreshold: 0
-  i_edgeResolveIteration: 0
+  DMGPlaceHolder: 150
   viewMeshFilter: {fileID: 7203357467995202872}
+  f_ViewCurrentAngle: 0
   tr_visibleTargetList: []
+  b_lanternSwitch: 0
 --- !u!114 &5279591502631756902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,7 +681,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 6820e07783cb8244cbdf38c91faf05a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

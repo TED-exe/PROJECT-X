@@ -30,7 +30,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private so_boolValue b_canRotate;
     private bool b_isGround;
 
-    private EnumsHolder.MovementState state;
+    private EnumsHolder.PlayerMovementState state;
 
     private void Awake()
     {
@@ -62,7 +62,7 @@ public class PlayerManager : MonoBehaviour
         crouchingSystem.MyInput(controllHolder, tr_raycastCasterV1, tr_raycastCasterV2); // take input crouching
         crouchingSystem.Crouching(tr_playerCollider); // crouching
         pullObjectSystem.MyInput(controllHolder, tr_raycastCasterV1);// pulling Object
-        lanternFieldOfView.MyInput();
+        lanternFieldOfView.MyInput(controllHolder);
 
     }
     private void FixedUpdate()
@@ -75,6 +75,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void BaseSetUp()
     {
+        movementSystem.BaseSetUp();// base set up for movement
         crouchingSystem.BaseSetUp(tr_playerCollider); // base set Up for crouching
         lanternFieldOfView.BaseSetUp(); // base set up for lantern field of view
         fadingBlockingObject.BaseSetUp(); // base set up for fading object
@@ -88,34 +89,34 @@ public class PlayerManager : MonoBehaviour
         if (b_isGround && (Input.GetKey(controllHolder.kc_allowToPullKey) && b_isPulling.value))
         {
             f_moveSpeed.value = f_pullingSpeed.value;
-            state = EnumsHolder.MovementState.pullingObject;
+            state = EnumsHolder.PlayerMovementState.pullingObject;
             return;
         }
         // state crouching
         else if (b_isGround && (Input.GetKey(controllHolder.kc_crouchKey) || b_isCrouching.value))
         {
             f_moveSpeed.value = f_crouchSpeed.value;
-            state = EnumsHolder.MovementState.crouching;
+            state = EnumsHolder.PlayerMovementState.crouching;
             return;
         }
         // state running
         else if (b_isGround && Input.GetKey(controllHolder.kc_runKey))
         {
             f_moveSpeed.value = f_runSpeed.value;
-            state = EnumsHolder.MovementState.running;
+            state = EnumsHolder.PlayerMovementState.running;
             return;
         }
         // state walking
         else if (b_isGround)
         {
             f_moveSpeed.value = f_walkSpeed.value;
-            state = EnumsHolder.MovementState.walking;
+            state = EnumsHolder.PlayerMovementState.walking;
             return;
         }
         // state air
         else if (!b_isGround)
         {
-            state = EnumsHolder.MovementState.air;
+            state = EnumsHolder.PlayerMovementState.air;
             return;
         }
     }

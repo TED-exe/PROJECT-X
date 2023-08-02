@@ -24,8 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private float f_vertical;
 
     private Rigidbody rb;
-
-    private void Awake()
+    public void BaseSetUp()
     {
         v3_moveDirection.v3_value = Vector3.zero;
         rb = GetComponent<Rigidbody>();
